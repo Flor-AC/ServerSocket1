@@ -24,32 +24,35 @@ public class ServerSocket1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ServerSocket servidor=null;
-        Socket cliente=null;
-        final int puerto=5000;
-        try {
-            servidor=new ServerSocket(puerto);
-            System.out.println("Servidor Iniciado");
-            while(true){
-                cliente=servidor.accept();
-                System.out.println("Cliente aceptado");
-                
-                InputStreamReader  isr= new InputStreamReader(cliente.getInputStream());
-                BufferedReader receptor=new BufferedReader(isr);
-                PrintWriter emisor= new PrintWriter(cliente.getOutputStream());
-                String msg=receptor.readLine();
-                
-                System.out.println("Msg: "+msg);
-                emisor.println("Que tal ...");
-                emisor.flush();
-                cliente.close();
-                System.out.println("Cliente Desconectado");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket servidor = new ServerSocket(5000);
+
+                    System.out.println("Servidor Iniciado");
+                    while (true) {
+                        Socket cliente = servidor.accept();
+                        System.out.println("Cliente aceptado");
+
+                        InputStreamReader isr = new InputStreamReader(cliente.getInputStream());
+                        BufferedReader receptor = new BufferedReader(isr);
+                        PrintWriter emisor = new PrintWriter(cliente.getOutputStream());
+                        String msg = receptor.readLine();
+
+                        System.out.println("Msg: " + msg);
+                        emisor.println("Que tal ...");
+                        emisor.flush();
+                        cliente.close();
+                        System.out.println("Cliente Desconectado");
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(ServerSocket1.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            
-        } catch (IOException ex) {
-            Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }).start();
         
+
     }
-    
+
 }
