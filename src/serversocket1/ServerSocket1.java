@@ -24,32 +24,30 @@ public class ServerSocket1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        ServerSocket servidor=null;
+        Socket cliente=null;
+        final int puerto=5000;
         try {
-            // TODO code application logic here
-
-            ServerSocket server = new ServerSocket(5000);
-            System.out.println("Servidor Levantado...");
-            
-            Socket cliente = server.accept();
-            
-            System.out.println("Cliente aceptado");
-            
-            InputStreamReader isr = new InputStreamReader(cliente.getInputStream());
-            BufferedReader receptor = new BufferedReader(isr);
-            
-            PrintWriter emisor = new PrintWriter(cliente.getOutputStream());
-            
-            String msg = receptor.readLine();
-            System.out.println("Msg: " + msg);
-            
-            emisor.println("Que tal...");
-            emisor.flush();
-            //Emisor
-            
-            //Receptor
+            servidor=new ServerSocket(puerto);
+            System.out.println("Servidor Iniciado");
+            while(true){
+                cliente=servidor.accept();
+                System.out.println("Cliente aceptado");
+                
+                InputStreamReader  isr= new InputStreamReader(cliente.getInputStream());
+                BufferedReader receptor=new BufferedReader(isr);
+                PrintWriter emisor= new PrintWriter(cliente.getOutputStream());
+                String msg=receptor.readLine();
+                
+                System.out.println("Msg: "+msg);
+                emisor.println("Que tal ...");
+                emisor.flush();
+                cliente.close();
+                System.out.println("Cliente Desconectado");
+            }
             
         } catch (IOException ex) {
-            Logger.getLogger(ServerSocket1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
