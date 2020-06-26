@@ -24,7 +24,7 @@ public class ServerSocket1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new Thread(new Runnable() {
+        new Thread(){
             @Override
             public void run() {
                 try {
@@ -49,9 +49,10 @@ public class ServerSocket1 {
                 } catch (IOException ex) {
                     Logger.getLogger(ServerSocket1.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            
             }
-        }).start();
-        
+            
+        }.start();
 
     }
 
